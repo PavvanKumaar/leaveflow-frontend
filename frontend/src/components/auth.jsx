@@ -7,12 +7,14 @@ export default function AuthProvider({children}){
         const token=sessionStorage.getItem("token")
         const username=sessionStorage.getItem("username")
         return token?{token,username}:null
+    
     })
+    const [role,setrole]=useState("");
 
     function login(token,username){
         sessionStorage.setItem("token",token)
         sessionStorage.setItem("username",username)
-        setUser(username)
+setUser({ token, username })
     }
     function logout(){
         sessionStorage.removeItem("token")
@@ -20,7 +22,7 @@ export default function AuthProvider({children}){
     }
 
     return (
-        <Authcontext.Provider value={{user,login,logout}}>
+        <Authcontext.Provider value={{user,role,login,logout,setrole}}>
             {children}
         </Authcontext.Provider>
     )
