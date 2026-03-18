@@ -1,8 +1,8 @@
 import React from 'react';
-import { useLeave } from '../components/LeaveContext';
-import Sidebar from '../components/Sidebar';
-import StatCard from '../components/StatCard';
-import RequestCard from '../components/RequestCard';
+import { useLeave } from '../components/LeaveContext.jsx';
+import Sidebar from '../components/Sidebar.jsx';
+import StatCard from '../components/StatCard.jsx';
+import RequestCard from '../components/RequestCard.jsx';
 
 const ManagerDashboard = () => {
   const { stats, requests, loading } = useLeave();

@@ -25,7 +25,7 @@ export const LeaveProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchRequests();
+    //fetchRequests();
   }, []);
 
   const stats = {
@@ -51,10 +51,15 @@ export const LeaveProvider = ({ children }) => {
 
   return (
     <LeaveContext.Provider value={{ 
-      stats, 
-      requests: allRequests.filter(r => r.status === 'PENDING_MANAGER'), 
+      stats:{
+        total: 10,
+        newRequests:[],// allRequests.filter(r => r.status === 'PENDING_MANAGER').length,
+        rejected: [],//allRequests.filter(r => r.status === 'REJECTED').length,
+        pending: [],//allRequests.filter(r => r.status.includes('PENDING')).length,
+      },
+      requests:[],// allRequests.filter(r => r.status === 'PENDING_MANAGER'), 
       handleAction, 
-      loading 
+      loading: false 
     }}>
       {children}
     </LeaveContext.Provider>
@@ -62,7 +67,7 @@ export const LeaveProvider = ({ children }) => {
 };
 
 export const useLeave = () => {
-  const context = useContext(LeaveContext);
-  if (!context) throw new Error("useLeave must be used within LeaveProvider");
-  return context;
+ 
+  
+  return useContext(LeaveContext);
 };

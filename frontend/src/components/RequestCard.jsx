@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLeave } from './LeaveContext';
+import { useLeave } from './LeaveContext.jsx';
 
 const RequestCard = ({ req }) => {
   const { handleAction } = useLeave();
@@ -36,7 +36,6 @@ const RequestCard = ({ req }) => {
           </div>
         </div>
         
-        {/* Right Side: Type, Days */}
         <div className="text-right leading-tight">
           <div className="text-xs text-gray-700 capitalize">{req.type?.toLowerCase() || 'Leave'}</div>
           <div className="text-xs font-semibold text-gray-800 mt-1">

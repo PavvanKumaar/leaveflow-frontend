@@ -68,7 +68,7 @@ export default function Login(){
     <div className="min-h-screen w-full bg-blue-900 flex items-center justify-center p-4">
       <div className="w-full max-h-md max-w-md bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20">
         <div className="text-center p-8 border-b border-gray-100">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl mb-6 shadow-lg">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-r from-blue-600 to-indigo-600 rounded-3xl mb-6 shadow-lg">
             <CalendarDaysIcon className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl font-bold bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-1">LeaveFlow</h1>
