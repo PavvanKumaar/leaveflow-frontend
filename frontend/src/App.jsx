@@ -19,21 +19,22 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/request" element={<RequestForm />} />
         <Route path = "/managerdash" element ={<ManagerDashboard/>}></Route>
-        <Route path="/" element={
-          <div className="container mx-auto p-8 max-w-7xl">
+        <Route path="/" element={<Login />} />
+          
+          
             {/* PAVVAN ADD THE NAVBAR COMPONENT CALL HERE */}
 
-              <Routes>
+              
                 <Route path="/HR" element={<AuthController>
                     <HR />
                     </AuthController>}/>
                 <Route path="/employee" element={<AuthController><Employee /></AuthController>} />
                 <Route path="/manager" element={<AuthController><Manager /></AuthController>} />
                 
-              </Routes>
-        </div>
+            
+       
          
-        } />
+        
       </Routes>
     </div>
   );

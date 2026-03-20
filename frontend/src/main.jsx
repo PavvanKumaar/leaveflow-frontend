@@ -4,11 +4,14 @@ import './index.css'
 import App from './App.jsx'
 import AuthProvider from "./components/auth.jsx"
 
+import { LeaveProvider } from './components/LeaveContext.jsx'
+
 createRoot(document.getElementById('root')).render(
  <BrowserRouter>
     <AuthProvider>
-    <App />
+      <LeaveProvider>
+        <App />
+      </LeaveProvider>
     </AuthProvider>
   </BrowserRouter>
-  
 )
