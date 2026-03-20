@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLeave } from './LeaveContext';
+import RequestDetailsModal from './RequestDetailsModal';
 
 const RequestCard = ({ req }) => {
   const { handleAction } = useLeave();
+  const [isOpen, setIsOpen] = useState(false);
   const getDotColor = (type) => {
-    const t = type?.toUpperCase() || '';
-    if (t.includes('SICK')) return 'bg-red-500';
-    if (t.includes('VACATION') || t.includes('CASUAL')) return 'bg-purple-500';
-    if (t.includes('WEDDING')) return 'bg-orange-500';
+    const t = (type || '').toString().toUpperCase();
+    if (t === 'EMERGENCY') return 'bg-red-500';
+    if (t === 'VACATION') return 'bg-purple-500';
     return 'bg-blue-500';
   };
   const calculateDays = (start, end) => {
@@ -20,7 +21,7 @@ const RequestCard = ({ req }) => {
     const e = new Date(end).toLocaleDateString('en-GB', options);
     return `${s} - ${e}`;
   };
-  const createdDate = new Date(req.created_at || new Date()).toLocaleDateString('en-GB');
+  const createdDate = new Date(req.created_at || Date.now()).toLocaleDateString('en-GB');
 
   return (
     <div className="bg-[#e5e5e5] p-5 rounded-2xl shadow-sm relative">
@@ -30,7 +31,7 @@ const RequestCard = ({ req }) => {
           <div className={`w-8 h-8 rounded-full ${getDotColor(req.type)}`} />
           <div className="leading-tight">
             <div className="text-sm font-medium text-gray-800">
-              {req.employee?.name || "Employee"}
+              {req.employee?.name || req.employee_id || "Employee"}
             </div>
             <div className="text-[10px] text-gray-500">{createdDate}</div>
           </div>
@@ -63,10 +64,28 @@ const RequestCard = ({ req }) => {
         >
           Approve
         </button>
-        <button className="text-[#3b82f6] text-xs font-medium ml-1 hover:underline">
+        <button className="text-[#3b82f6] text-xs font-medium ml-1 hover:underline" onClick={() => setIsOpen(true)}>
           Details
         </button>
       </div>
+
+      <RequestDetailsModal 
+        req={req}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onApprove={(id) => {
+          handleAction(id, 'approve');
+          setIsOpen(false);
+        }}
+        onReject={(id) => {
+          handleAction(id, 'deny');
+          setIsOpen(false);
+        }}
+        onReturn={(id) => {
+          handleAction(id, 'return');
+          setIsOpen(false);
+        }}
+      />
     </div>
   );
 };
