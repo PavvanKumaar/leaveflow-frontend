@@ -1,18 +1,19 @@
 import React from 'react';
-import { useLeave } from '../components/LeaveContext.jsx';
-import Sidebar from '../components/Sidebar.jsx';
-import StatCard from '../components/StatCard.jsx';
-import RequestCard from '../components/RequestCard.jsx';
+import { useLeave } from '../components/LeaveContext';
+import Sidebar from '../components/Sidebar';
+import StatCard from '../components/StatCard';
+import RequestCard from '../components/RequestCard';
+import HeaderBar from '../components/HeaderBar'
 
 const ManagerDashboard = () => {
   const { stats, requests, loading } = useLeave();
 
   return (
     <div className="flex min-h-screen bg-[#f0f0f0] font-sans">
-      <Sidebar />
+      <Sidebar name = 'dashboard'/>
       
       <main className="flex-1 bg-white md:rounded-tl-[30px] shadow-sm p-10 md:p-12 overflow-y-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Welcome, Manager</h1>
+        <HeaderBar/>
 
         <section className="mb-10">
           <h2 className="text-xl font-bold text-gray-900">Leave Requests</h2>

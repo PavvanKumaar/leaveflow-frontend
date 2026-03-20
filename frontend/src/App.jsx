@@ -7,6 +7,8 @@ import Manager from './components/manager.jsx';
 import { useAuth } from './components/auth.jsx';
 import RequestForm from './components/requestForm.jsx';
 import ManagerDashboard from './Pages/ManagerDashboard.jsx';
+import RequestHistory from './Pages//RequestHistory.jsx'
+
 function AuthController({ children }) {
   const { user } = useAuth();
   return user ? children : <Navigate to="/login" replace />;
@@ -14,29 +16,15 @@ function AuthController({ children }) {
 
 function App() {
   return (
-    <div className="min-h-screen">
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/request" element={<RequestForm />} />
-        <Route path = "/managerdash" element ={<ManagerDashboard/>}></Route>
-        <Route path="/" element={<Login />} />
-          
-          
-            {/* PAVVAN ADD THE NAVBAR COMPONENT CALL HERE */}
-
-              
-                <Route path="/HR" element={<AuthController>
-                    <HR />
-                    </AuthController>}/>
-                <Route path="/employee" element={<AuthController><Employee /></AuthController>} />
-                <Route path="/manager" element={<AuthController><Manager /></AuthController>} />
-                
-            
-       
-         
-        
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/request" element={<AuthController><RequestForm /></AuthController>} />
+      <Route path="/HR" element={<AuthController><HR /></AuthController>} />
+      <Route path="/employee" element={<AuthController><Employee /></AuthController>} />
+      <Route path="/manager" element={<ManagerDashboard />} />
+      <Route path="/" element={<Navigate to="/manager" replace />} />
+      <Route path = "requesthist" element = {<RequestHistory/>}/>
+    </Routes>
   );
 }
 
