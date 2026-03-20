@@ -4,7 +4,7 @@ import { useAuth } from './auth.jsx';
 const Sidebar = ({name}) => {
   const navigate = useNavigate();
   var {role}=useAuth()
-  role="HR"
+  role="HR"   //    !!!!!!!!!!!!!!!!!!!!!!!!!!! pavvan it is just for checking so that we can remove it later and use that when backend works
   const handleRequestReceived = () => {
     navigate('/requests-received');
   };
