@@ -420,7 +420,9 @@ export default function Employee() {
               setPage={setPage}
             />
           </div>
-          
+          <div>
+            <RequestDetailsModal/>
+          </div>
         </main>
       </div>
     );
