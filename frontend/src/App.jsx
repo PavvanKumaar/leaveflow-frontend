@@ -21,7 +21,7 @@ function App() {
       <Route path="/requests" element={<RequestForm />} />
       <Route path="/manager" element={<ManagerDashboard />} />
       <Route path="/HR" element={<HR />} />
-      <Route path="/employee" element={<AuthController><Employee /></AuthController>} />
+      <Route path="/employee" element={<Employee />} />
       
       <Route path="/" element={<Login/>} />
       <Route path = "/requests-received" element = {<RequestHistory/>}/>

@@ -52,7 +52,7 @@ export const LeaveProvider = ({ children }) => {
       });
       setAllRequests(res.data);
     } catch (err) {
-      console.error("Fetch failed - using mock data:", err);
+      console.error("Fetch failed :", err);
     } finally {
       setLoading(false);
     }

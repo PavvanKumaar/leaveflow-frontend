@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar.jsx";
 import HeaderBar from "./HeaderBar.jsx";  
+import { useParams } from "react-router-dom";
 
 const leaveTypes = [
   "Annual Leave",
@@ -13,6 +14,8 @@ const leaveTypes = [
 ];
  
 export default function RequestForm() {
+  const {id}=useParams()
+  const [isedit, setIsEdit] = useState(Boolean(id));
   const [leaveType, setLeaveType] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -23,6 +26,35 @@ export default function RequestForm() {
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
  
+  
+    
+    useEffect(() => {
+      const fetchRequestData = async () => {
+        try {
+          const response = await axios.get(`/api/leave-request/${id}`,{headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }});
+          if (response.status === 200) {
+            const data = response.data;
+            setLeaveType(data.leaveType);
+            setStartDate(data.startDate);
+            setEndDate(data.endDate);
+            setReason(data.reason);
+            setFileName(data.fileName);
+            setConfirmed(data.confirmed);
+            setSignature(data.signature);
+          } else {
+            setErrors({ form: "Failed to load request data. Please try again." });
+          }
+        } catch (error) {
+          setErrors({ form: "Failed to load request data. Please try again." });
+        }
+      };
+
+      if (isedit) {
+        fetchRequestData();
+      }
+    }, [id]);
+
+
   const validate = () => {
     const newErrors = {};
     if (!leaveType) newErrors.leaveType = "Please select a leave type.";
@@ -43,6 +75,7 @@ export default function RequestForm() {
       setErrors(validationErrors);
       return;
     }
+    if(!isedit){
     try{
         // Simulate API call
         const leaveform={
@@ -53,7 +86,9 @@ export default function RequestForm() {
             fileName,
             signature
         };
-        const response=await axios.post("/api/leave-request", leaveform);   
+        const response=await axios.post("/api/leave-request", leaveform, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });   
         if (response.status===200){
                 // Handle success (e.g., show notification)
                 setSubmitted(true);
@@ -65,8 +100,34 @@ export default function RequestForm() {
         // Handle error (e.g., show notification)
         setErrors({ form: "Failed to submit request. Please try again." });
     }
-    
-  };
+  }
+  else{
+    try{
+        const leaveform={
+            leaveType,  
+            startDate,
+            endDate,
+            reason,
+            fileName,
+            signature
+        };
+        const response=await axios.put(`/api/leave-request/${id}`,leaveform,{//check the api and give correct endpoint
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
+        if (response.status===200){
+            // Handle success (e.g., show notification)
+            setSubmitted(true);
+        } else {
+            setErrors({ form: "Failed to update request. Please try again." });
+        }
+    } catch (error) {
+        // Handle error (e.g., show notification)
+        setErrors({ form: "Failed to update request. Please try again." });
+    }
+
+  }
+  
+};
  
   const handleReset = () => {
     setLeaveType("");

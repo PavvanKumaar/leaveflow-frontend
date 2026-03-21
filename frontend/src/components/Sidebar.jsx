@@ -25,10 +25,10 @@ const Sidebar = ({name}) => {
             <span className="text-lg leading-none">✉</span>
             <button onClick={() => {navigate('/requests')}}>Leave Request</button>
           </div>
-          <div className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-gray-200 text-gray-500 font-medium cursor-pointer">
+          {role==="employee"&&(<div className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-gray-200 text-gray-500 font-medium cursor-pointer">
             <span className="text-lg leading-none">🕑</span>
             <button onClick={handleRequestReceived}>Request Received</button>
-          </div>
+          </div>)}
         </div>
       </nav>
     </aside>

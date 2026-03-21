@@ -1,6 +1,6 @@
 import { useAuth } from "./auth.jsx";
 
-export default function HeaderBar({title="Dashboard"}){
+export default function HeaderBar({title="employee"}){
     var {user,role}=useAuth();
     user=user?user:"john"
     if (role=="manager"){
