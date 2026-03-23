@@ -89,7 +89,7 @@ export const LeaveProvider = ({ children }) => {
   return (
     <LeaveContext.Provider value={{ 
       stats:{
-        total: allRequests,
+        total: allRequests.length,
         newRequests:allRequests.filter(r => r.status === 'PENDING_MANAGER').length,
         rejected:allRequests.filter(r => r.status === 'REJECTED').length,
         pending:allRequests.filter(r => r.status.includes('PENDING')).length,
