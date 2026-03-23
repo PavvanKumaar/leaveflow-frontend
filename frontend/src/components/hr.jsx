@@ -10,7 +10,7 @@ function StatsCard({ title, value, variant = 'white' }) {
     }[variant];
   
     return (
-      <div className={`${bgColor} rounded-2xl md:rounded-[42px] p-5  shadow-sm flex flex-col items-center justify-center h-[60px] font-['Roboto:Medium',sans-serif]`}>
+      <div className={`${bgColor} rounded-xl md:rounded-[22px] p-5  shadow-sm flex flex-col items-center justify-center h-[60px] font-['Roboto:Medium',sans-serif]`}>
         <h3 className="text-md   text-black font-medium text-center tracking-[0.1px]">
           {title}
         </h3>
@@ -30,7 +30,7 @@ export default function HR() {
     <main className="flex-1 px-4 md:px-6 py-4 md:py-6 overflow-y-auto">
       <HeaderBar title="Welcome HR" />
             
-      <section className="mt-6 bg-white rounded-2xl shadow-sm p-8">
+      <section className="mt-6  rounded-2xl shadow-sm p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                     <StatsCard title="Pending Request" value="0" variant="white" />
                     <StatsCard title="Currently on leave" value="100" variant="gray" />
