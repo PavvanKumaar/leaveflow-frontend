@@ -41,15 +41,15 @@ export default function Login(){
         password,
         role
       });
-      const { token, username } = response.data;
+      const { token, username,userid } = response.data;
       login(token, username);
       setrole(role);
       if(role === "HR"){
-        navigate("/HR");
+        navigate(`/HR/${userid}`);
       } else if(role === "Employee"){
-        navigate("/employee");
+        navigate(`/employee/${userid}`);
       } else if(role === "Manager"){
-        navigate("/manager");
+        navigate(`/manager/${userid}`);
       }
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
