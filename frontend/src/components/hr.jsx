@@ -2,6 +2,9 @@ import Sidebar from "./Sidebar.jsx";
 import HeaderBar from "./HeaderBar.jsx";
 import RequestCard from "./RequestCard.jsx";
 import {useLeave} from "./LeaveContext.jsx"
+import { useEffect, useState } from "react";
+import { useAuth } from "./auth.jsx";
+import apiClient from "../api.js";
 function StatsCard({ title, value, variant = 'white' }) {
     const bgColor = {
       'white': 'bg-[#fefefe]',
@@ -20,9 +23,100 @@ function StatsCard({ title, value, variant = 'white' }) {
       </div>
     );
   }
+
+function calculateStats(requests) {
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+  const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+  const stats = {
+    pending: 0,
+    onLeave: 0,
+    approvedThisMonth: 0,
+    newRequest: 0,
+    rejected: 0,
+    returned: 0
+  };
+
+  requests.forEach(request => {
+    // Count pending requests
+    if (request.status.includes('PENDING')) {
+      stats.pending++;
+    }
+
+    // Count employees currently on leave
+    const startDate = new Date(request.start_date);
+    const endDate = new Date(request.end_date);
+    if (now >= startDate && now <= endDate && request.status === 'APPROVED') {
+      stats.onLeave++;
+    }
+
+    // Count approved requests this month
+    const createdDate = new Date(request.created_at);
+    if (
+      request.status === 'APPROVED' &&
+      createdDate.getMonth() === currentMonth &&
+      createdDate.getFullYear() === currentYear
+    ) {
+      stats.approvedThisMonth++;
+    }
+
+    // Count new requests (created in last 24 hours)
+    const createdDate2 = new Date(request.created_at);
+    if (createdDate2 >= oneDayAgo) {
+      stats.newRequest++;
+    }
+
+    // Count rejected requests
+    if (request.status === 'REJECTED') {
+      stats.rejected++;
+    }
+
+    // Count returned requests
+    if (request.status === 'RETURNED') {
+      stats.returned++;
+    }
+  });
+
+  return stats;
+}
   
 export default function HR() {
-    const { stats, requests, loading } = useLeave();
+    const  stats=[]
+    const [requests,setAllRequests]=useState([]);
+    const [statsData,setStatsData]=useState({
+      pending: 0,
+      onLeave: 0,
+      approvedThisMonth: 0,
+      newRequest: 0,
+      rejected: 0,
+      returned: 0
+    });
+    const  loading=[] 
+    
+    async function fetchData() {
+      const token = localStorage.getItem('token');
+      
+        try {
+          const response = await apiClient.get('/requests', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          setAllRequests(response.data);
+          const calculatedStats = calculateStats(response.data);
+          setStatsData(calculatedStats);
+          console.log('Fetched HR dashboard data:', response.data);
+          console.log('Calculated stats:', calculatedStats);
+        } catch (error) {
+          console.log('Error fetching HR dashboard data:', error);
+        }
+      }
+      useEffect(() => {
+        fetchData();
+      }, []);
+      console.log(requests)
     return (
         <div className="flex min-h-screen bg-[#e0e0e0] font-['Roboto:Medium',sans-serif] gap-4 flex-col md:flex-row">
     <Sidebar name = 'dashboard'/>
@@ -32,12 +126,12 @@ export default function HR() {
             
       <section className="mt-6  rounded-2xl shadow-sm p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                    <StatsCard title="Pending Request" value="0" variant="white" />
-                    <StatsCard title="Currently on leave" value="100" variant="gray" />
-                    <StatsCard title="Approved this month" value="50" variant="white" />
-                    <StatsCard title="New Request" value="20" variant="light-gray" />
-                    <StatsCard title="Rejected" value="10" variant="gray" />
-                    <StatsCard title="Returned" value="5" variant="light-gray" />
+                    <StatsCard title="Pending Request" value={statsData.pending} variant="white" />
+                    <StatsCard title="Currently on leave" value={statsData.onLeave} variant="gray" />
+                    <StatsCard title="Approved this month" value={statsData.approvedThisMonth} variant="white" />
+                    <StatsCard title="New Request" value={statsData.newRequest} variant="light-gray" />
+                    <StatsCard title="Rejected" value={statsData.rejected} variant="gray" />
+                    <StatsCard title="Returned" value={statsData.returned} variant="light-gray" />
             </div>
       </section>
       
